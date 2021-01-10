@@ -18,10 +18,11 @@ double pidOutput = 0;
 double pidSetPoint = SETPOINT;
 PID bPID(&pidInputTemp, &pidOutput, &pidSetPoint, AGGKP, (AGGKP / AGGTN), (AGGTV * AGGTN), PONE, DIRECT); //PID initialisation
 
+WiFiServer server(80);
+
 void ICACHE_RAM_ATTR onTimer1ISR()
 {
     static unsigned int isrCounter = 0; // counter for ISR
-    timer1_write(6250);                 // set interrupt time to 20ms
 
     if (pidOutput <= isrCounter)
     {
@@ -58,14 +59,31 @@ void gpioSetup()
     pinMode(SWITCH_STEAM, INPUT);
 }
 
+String Weboutput()
+{
+    String output;
+    output += "http/1.x 200 OK\n";
+    output += "Content-Type: text/html; charset=UTF-8\n\n";
+    output += "<!DOCTYPE HTML>";
+    output += "<html>";
+    output += "<h1>Hallo Welt ";
+    String now_time(millis());
+    output += now_time;
+    output += "</h1>";
+    output += "</html>";
+    return output;
+}
+
 void setup()
 {
     //WLAN und OTA Config
-    WiFi.hostname(HOSTNAME);
+    // WiFi.hostname(HOSTNAME);
     WiFi.begin(SSID, PASSWD);
     WiFi.setAutoReconnect(true);
-    ArduinoOTA.setHostname(OTAHOST); //  Device name for OTA
-    ArduinoOTA.setPassword(OTAPASS); //  Password for OTA
+    delay(1000);
+    server.begin();
+    // ArduinoOTA.setHostname(OTAHOST); //  Device name for OTA
+    // ArduinoOTA.setPassword(OTAPASS); //  Password for OTA
     ArduinoOTA.begin();
     gpioSetup();
     /********************************************************
@@ -91,6 +109,21 @@ void loop()
 {
     static int machineState = 0;
     static bool machineEnabled = false;
+    WiFiClient client = server.available();
+
+    ArduinoOTA.handle(); // For OTA
+    // Disable interrupt it OTA is starting, otherwise it will not work
+    ArduinoOTA.onStart([]() {
+        timer1_disable();
+        digitalWrite(RELAY_HEAT, LOW); //Stop heating
+    });
+    ArduinoOTA.onError([](ota_error_t error) {
+        timer1_enable(TIM_DIV16, TIM_EDGE, TIM_SINGLE);
+    });
+    // Enable interrupts if OTA is finished
+    ArduinoOTA.onEnd([]() {
+        timer1_enable(TIM_DIV16, TIM_EDGE, TIM_SINGLE);
+    });
 
     if (machineEnabled == false)
     {
@@ -151,4 +184,14 @@ void loop()
         pidOutput = 0;
         break;
     }
+    String request = client.readStringUntil('\r');
+    client.flush();
+
+    if (request == "")
+    {
+        client.stop();
+        return;
+    }
+
+    client.print(Weboutput());
 }
