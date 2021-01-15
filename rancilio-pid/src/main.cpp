@@ -19,6 +19,8 @@
 #include <ArduinoJson.h> // https://github.com/bblanchon/ArduinoJson
 #include <WiFiManager.h> // https://github.com/tzapu/WiFiManager
 
+volatile int interrupts;
+
 ZACwire<SENSOR_TEMP> TempSensor(306);
 
 double pidInputTemp = 0;
@@ -41,6 +43,7 @@ int currentSpeed = 0;
 
 void ICACHE_RAM_ATTR onTimer1ISR()
 {
+    interrupts++;
     isrPrint = true;
     static unsigned int isrCounter = 0; // counter for ISR
 
@@ -61,8 +64,11 @@ void ICACHE_RAM_ATTR onTimer1ISR()
         isrCounter = 0;
     }
 
+    
     //run PID calculation
     bPID.Compute();
+
+    timer1_write(6250);
 }
 
 void gpioSetup()
@@ -231,6 +237,7 @@ void loop()
     if (isrPrint == true)
     {
         Serial.println("ISR");
+        
         isrPrint = false;
     }
 
