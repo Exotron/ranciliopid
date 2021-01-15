@@ -4,12 +4,20 @@
     Wakeup Timer
     Preinfusion?
 ******************************************************/
-#include <ArduinoOTA.h>
 #include <ESP8266WebServer.h>
 #include <EEPROM.h>
 #include <ZACwire.h> //NEW TSIC LIB
 #include "userConfig.h"
 #include "PID_v1.h"
+#include "html.h"
+
+#include <ESP8266WiFi.h>
+#include <ESP8266mDNS.h>
+#include <WiFiClient.h>
+#include <WebSocketsServer.h> // https://github.com/Links2004/arduinoWebSockets
+#include <ESP8266HTTPUpdateServer.h>
+#include <ArduinoJson.h> // https://github.com/bblanchon/ArduinoJson
+#include <WiFiManager.h> // https://github.com/tzapu/WiFiManager
 
 ZACwire<SENSOR_TEMP> TempSensor(306);
 
@@ -18,10 +26,22 @@ double pidOutput = 0;
 double pidSetPoint = SETPOINT;
 PID bPID(&pidInputTemp, &pidOutput, &pidSetPoint, AGGKP, (AGGKP / AGGTN), (AGGTV * AGGTN), PONE, DIRECT); //PID initialisation
 
-WiFiServer server(80);
+MDNSResponder mdns;
+WebSocketsServer webSocket = WebSocketsServer(81);
+ESP8266WebServer httpServer(80);
+ESP8266HTTPUpdateServer httpUpdater;
+
+bool isrPrint = false;
+
+const char *update_path = "/firmware";
+const char *update_username = "admin";
+const char *update_password = "admin";
+
+int currentSpeed = 0;
 
 void ICACHE_RAM_ATTR onTimer1ISR()
 {
+    isrPrint = true;
     static unsigned int isrCounter = 0; // counter for ISR
 
     if (pidOutput <= isrCounter)
@@ -37,6 +57,7 @@ void ICACHE_RAM_ATTR onTimer1ISR()
     //set PID output as relais commands
     if (isrCounter > WINDOWSIZE)
     {
+        isrPrint = true;
         isrCounter = 0;
     }
 
@@ -59,32 +80,125 @@ void gpioSetup()
     pinMode(SWITCH_STEAM, INPUT);
 }
 
-String Weboutput()
+void sendUpdate()
 {
-    String output;
-    output += "http/1.x 200 OK\n";
-    output += "Content-Type: text/html; charset=UTF-8\n\n";
-    output += "<!DOCTYPE HTML>";
-    output += "<html>";
-    output += "<h1>Hallo Welt ";
-    String now_time(millis());
-    output += now_time;
-    output += "</h1>";
-    output += "</html>";
-    return output;
+    DynamicJsonDocument jsonBuffer(1024);
+
+    jsonBuffer["speed"] = currentSpeed;
+
+    jsonBuffer["power"] = false;
+
+    String res;
+    serializeJson(jsonBuffer, res);
+
+    webSocket.broadcastTXT(res);
+}
+
+void webSocketEvent(uint8_t num, WStype_t type, uint8_t *payload, size_t length)
+{
+    switch (type)
+    {
+    case WStype_DISCONNECTED:
+        Serial.printf("[%u] Disconnected!\r\n", num);
+        break;
+    case WStype_CONNECTED:
+        Serial.printf("[%u] Connected from url: %s\r\n", num, payload);
+        sendUpdate();
+        break;
+    case WStype_TEXT:
+    {
+        Serial.printf("[%u] get Text: %s\r\n", num, payload);
+
+        DynamicJsonDocument jsonBuffer(1024);
+        DeserializationError error = deserializeJson(jsonBuffer, payload);
+        if (error)
+        {
+            return;
+        }
+
+        if (jsonBuffer["power"])
+        {
+            Serial.println("power");
+        }
+
+        if (jsonBuffer["speed"])
+        {
+            Serial.println("speed");
+        }
+
+        break;
+    }
+    case WStype_PING:
+        // Serial.printf("[%u] Got Ping!\r\n", num);
+        break;
+    case WStype_PONG:
+        // Serial.printf("[%u] Got Pong!\r\n", num);
+        break;
+    case WStype_BIN:
+        Serial.printf("[%u] get binary length: %u\r\n", num, length);
+        break;
+    default:
+        Serial.printf("Invalid WStype [%d]\r\n", type);
+        break;
+    }
 }
 
 void setup()
 {
+    Serial.begin(115200); // Start the Serial communication to send messages to the computer
+    delay(10);
+    Serial.println('\n');
     //WLAN und OTA Config
-    // WiFi.hostname(HOSTNAME);
+    WiFi.mode(WIFI_STA);
+    WiFi.hostname(HOSTNAME);
     WiFi.begin(SSID, PASSWD);
     WiFi.setAutoReconnect(true);
-    delay(1000);
-    server.begin();
-    // ArduinoOTA.setHostname(OTAHOST); //  Device name for OTA
-    // ArduinoOTA.setPassword(OTAPASS); //  Password for OTA
-    ArduinoOTA.begin();
+
+    Serial.println("Connecting ...");
+    int i = 0;
+    while (WiFi.status() != WL_CONNECTED)
+    { // Wait for the Wi-Fi to connect: scan for Wi-Fi networks, and connect to the strongest of the networks above
+        delay(1000);
+        Serial.print(++i);
+        Serial.print(' ');
+    }
+    Serial.println('\n');
+    Serial.print("Connected to ");
+    Serial.println(SSID); // Tell us what network we're connected to
+    Serial.print("IP address:\t");
+    Serial.println(WiFi.localIP()); // Send the IP address of the ESP8266 to the computer
+
+    if (!MDNS.begin(HOSTNAME))
+    { // Start the mDNS responder for esp8266.local
+        Serial.println("Error setting up MDNS responder!");
+    }
+    Serial.println("mDNS responder started");
+
+    // Add service to MDNS-SD
+    MDNS.addService("http", "tcp", 80);
+    MDNS.addService("oznu-platform", "tcp", 81);
+    MDNS.addServiceTxt("oznu-platform", "tcp", "type", "fan");
+    MDNS.addServiceTxt("oznu-platform", "tcp", "mac", WiFi.macAddress());
+
+    // start web socket
+    webSocket.begin();
+    webSocket.onEvent(webSocketEvent);
+    Serial.println("Web socket server started on port 81");
+
+    // start http update server
+    httpUpdater.setup(&httpServer, update_path, update_username, update_password);
+
+    httpServer.on("/", []() {
+        if (!httpServer.authenticate(update_username, update_password))
+        {
+            return httpServer.requestAuthentication();
+        }
+        String s = MAIN_page;
+        httpServer.send(200, "text/html", s);
+    });
+
+    httpServer.begin();
+
     gpioSetup();
     /********************************************************
      Ini PID
@@ -107,23 +221,18 @@ void setup()
 
 void loop()
 {
+    MDNS.update();
+    httpServer.handleClient();
+    webSocket.loop();
+
     static int machineState = 0;
     static bool machineEnabled = false;
-    WiFiClient client = server.available();
 
-    ArduinoOTA.handle(); // For OTA
-    // Disable interrupt it OTA is starting, otherwise it will not work
-    ArduinoOTA.onStart([]() {
-        timer1_disable();
-        digitalWrite(RELAY_HEAT, LOW); //Stop heating
-    });
-    ArduinoOTA.onError([](ota_error_t error) {
-        timer1_enable(TIM_DIV16, TIM_EDGE, TIM_SINGLE);
-    });
-    // Enable interrupts if OTA is finished
-    ArduinoOTA.onEnd([]() {
-        timer1_enable(TIM_DIV16, TIM_EDGE, TIM_SINGLE);
-    });
+    if (isrPrint == true)
+    {
+        Serial.println("ISR");
+        isrPrint = false;
+    }
 
     if (machineEnabled == false)
     {
@@ -184,14 +293,4 @@ void loop()
         pidOutput = 0;
         break;
     }
-    String request = client.readStringUntil('\r');
-    client.flush();
-
-    if (request == "")
-    {
-        client.stop();
-        return;
-    }
-
-    client.print(Weboutput());
 }
