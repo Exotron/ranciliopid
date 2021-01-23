@@ -19,8 +19,6 @@
 #include <ArduinoJson.h> // https://github.com/bblanchon/ArduinoJson
 #include <WiFiManager.h> // https://github.com/tzapu/WiFiManager
 
-volatile int interrupts;
-
 ZACwire<SENSOR_TEMP> TempSensor(306);
 
 double pidInputTemp = 0;
@@ -33,18 +31,12 @@ WebSocketsServer webSocket = WebSocketsServer(81);
 ESP8266WebServer httpServer(80);
 ESP8266HTTPUpdateServer httpUpdater;
 
-bool isrPrint = false;
-
 const char *update_path = "/firmware";
 const char *update_username = "admin";
 const char *update_password = "admin";
 
-int currentSpeed = 0;
-
 void ICACHE_RAM_ATTR onTimer1ISR()
 {
-    interrupts++;
-    isrPrint = true;
     static unsigned int isrCounter = 0; // counter for ISR
 
     if (pidOutput <= isrCounter)
@@ -60,11 +52,9 @@ void ICACHE_RAM_ATTR onTimer1ISR()
     //set PID output as relais commands
     if (isrCounter > WINDOWSIZE)
     {
-        isrPrint = true;
         isrCounter = 0;
     }
 
-    
     //run PID calculation
     bPID.Compute();
 
@@ -76,6 +66,7 @@ void gpioSetup()
     pinMode(RELAY_HEAT, OUTPUT);
     pinMode(RELAY_PUMP, OUTPUT);
     pinMode(RELAY_VALVE, OUTPUT);
+    pinMode(RELAY_MAIN, OUTPUT);
     digitalWrite(RELAY_HEAT, LOW);
     digitalWrite(RELAY_PUMP, LOW);
     digitalWrite(RELAY_VALVE, LOW);
@@ -90,7 +81,7 @@ void sendUpdate()
 {
     DynamicJsonDocument jsonBuffer(1024);
 
-    jsonBuffer["speed"] = currentSpeed;
+    jsonBuffer["speed"] = 100;
 
     jsonBuffer["power"] = false;
 
@@ -151,7 +142,7 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t *payload, size_t length)
 
 void setup()
 {
-    Serial.begin(115200); // Start the Serial communication to send messages to the computer
+    Serial.begin(9600); // Start the Serial communication to send messages to the computer
     delay(10);
     Serial.println('\n');
     //WLAN und OTA Config
@@ -221,8 +212,6 @@ void setup()
     ******************************************************/
     timer1_isr_init();
     timer1_attachInterrupt(onTimer1ISR);
-    timer1_enable(TIM_DIV256, TIM_EDGE, TIM_SINGLE);
-    timer1_write(6250); // set interrupt time to 20ms
 }
 
 void loop()
@@ -230,15 +219,15 @@ void loop()
     MDNS.update();
     httpServer.handleClient();
     webSocket.loop();
-
-    static int machineState = 0;
+    static int machineState = STATE_OFF;
+    static int lastMachineState = -1;
     static bool machineEnabled = false;
+    static int lastMillis = 0;
 
-    if (isrPrint == true)
+    if (millis() - lastMillis > 500 && digitalRead(SWITCH_MAIN) == HIGH)
     {
-        Serial.println("ISR");
-        
-        isrPrint = false;
+        machineEnabled = !machineEnabled;
+        lastMillis = millis();
     }
 
     if (machineEnabled == false)
@@ -264,20 +253,39 @@ void loop()
         }
     }
 
+    if (lastMachineState != machineState && machineState == STATE_OFF)
+    {
+        lastMachineState = machineState;
+        timer1_disable();
+        delay(100);
+        digitalWrite(RELAY_MAIN, LOW);
+    }
+    if (lastMachineState != machineState && lastMachineState == STATE_OFF)
+    {
+        lastMachineState = machineState;
+        delay(50);
+        digitalWrite(RELAY_MAIN, HIGH);
+        delay(50);
+        timer1_enable(TIM_DIV256, TIM_EDGE, TIM_SINGLE);
+        timer1_write(6250); // set interrupt time to 20ms
+    }
+
     switch (machineState)
     {
     case STATE_OFF:
+        bPID.SetMode(MANUAL);
+        pidOutput = 0;
         digitalWrite(RELAY_VALVE, LOW);
         digitalWrite(RELAY_PUMP, LOW);
         digitalWrite(RELAY_HEAT, LOW);
-        bPID.SetMode(MANUAL);
-        pidOutput = 0;
+
         break;
     case STATE_ON:
         digitalWrite(RELAY_VALVE, LOW);
         digitalWrite(RELAY_PUMP, LOW);
         pidSetPoint = SETPOINT;
         bPID.SetMode(AUTOMATIC);
+
         break;
     case STATE_BREW:
         digitalWrite(RELAY_VALVE, HIGH);

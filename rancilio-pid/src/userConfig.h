@@ -3,8 +3,8 @@
 
 //Wifi
 #define HOSTNAME "rancilio"
-#define SSID "wlanname"
-#define PASSWD "wlanpass"
+#define SSID "SSID"
+#define PASSWD "PASSWORD"
 
 //OTA
 #define OTAHOST "Rancilio" // Name to be shown in ARUDINO IDE Port
@@ -37,6 +37,7 @@
 #define RELAY_VALVE 12 //Output pin for 3-way-valve     D6 on Board
 #define RELAY_PUMP 13  //Output pin for pump            D7 on Board
 #define RELAY_HEAT 14  //Output pin for heater          D5 on Board
+#define RELAY_MAIN 0 // ToDo Define Pin
 
 //Coffeemachine Switches
 
