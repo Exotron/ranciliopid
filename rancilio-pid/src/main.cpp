@@ -31,6 +31,8 @@ WebSocketsServer webSocket = WebSocketsServer(81);
 ESP8266WebServer httpServer(80);
 ESP8266HTTPUpdateServer httpUpdater;
 
+bool machineEnabled = false;
+
 const char *update_path = "/firmware";
 const char *update_username = "admin";
 const char *update_password = "admin";
@@ -81,9 +83,7 @@ void sendUpdate()
 {
     DynamicJsonDocument jsonBuffer(1024);
 
-    jsonBuffer["speed"] = 100;
-
-    jsonBuffer["power"] = false;
+    jsonBuffer["power"] = machineEnabled;
 
     String res;
     serializeJson(jsonBuffer, res);
@@ -115,14 +115,13 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t *payload, size_t length)
 
         if (jsonBuffer["power"])
         {
-            Serial.println("power");
+            machineEnabled = jsonBuffer["power"];
+            sendUpdate();
         }
-
-        if (jsonBuffer["speed"])
+        if (jsonBuffer["status"])
         {
-            Serial.println("speed");
+            sendUpdate();
         }
-
         break;
     }
     case WStype_PING:
@@ -174,7 +173,7 @@ void setup()
     // Add service to MDNS-SD
     MDNS.addService("http", "tcp", 80);
     MDNS.addService("oznu-platform", "tcp", 81);
-    MDNS.addServiceTxt("oznu-platform", "tcp", "type", "fan");
+    MDNS.addServiceTxt("oznu-platform", "tcp", "type", "rancilio");
     MDNS.addServiceTxt("oznu-platform", "tcp", "mac", WiFi.macAddress());
 
     // start web socket
@@ -221,7 +220,6 @@ void loop()
     webSocket.loop();
     static int machineState = STATE_OFF;
     static int lastMachineState = -1;
-    static bool machineEnabled = false;
     static int lastMillis = 0;
 
     if (millis() - lastMillis > 500 && digitalRead(SWITCH_MAIN) == HIGH)
