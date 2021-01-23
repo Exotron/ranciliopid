@@ -1,0 +1,520 @@
+EESchema Schematic File Version 4
+EELAYER 30 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 1 1
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L Connector:Screw_Terminal_01x03 J4
+U 1 1 60108EAC
+P 9700 850
+F 0 "J4" H 9780 892 50  0000 L CNN
+F 1 "Screw_Terminal_220V" H 9780 801 50  0000 L CNN
+F 2 "" H 9700 850 50  0001 C CNN
+F 3 "~" H 9700 850 50  0001 C CNN
+	1    9700 850 
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	9500 750  8400 750 
+Wire Wire Line
+	8400 750  8400 1050
+Wire Wire Line
+	8800 1050 8800 850 
+Wire Wire Line
+	8800 850  9500 850 
+Wire Wire Line
+	6700 2500 6700 2350
+Wire Wire Line
+	9500 2500 6700 2500
+Wire Wire Line
+	8700 2400 9500 2400
+Wire Wire Line
+	8700 1650 8700 2400
+Wire Wire Line
+	7000 2050 8300 2050
+Wire Wire Line
+	8300 1650 8300 2050
+$Comp
+L Relay:FINDER-40.52 K1
+U 1 1 600E7AF4
+P 8300 1350
+F 0 "K1" H 8930 1396 50  0000 L CNN
+F 1 "FINDER-40.52" H 8930 1305 50  0000 L CNN
+F 2 "Relay_THT:Relay_DPDT_Finder_40.52" H 9650 1320 50  0001 C CNN
+F 3 "http://gfinder.findernet.com/assets/Series/353/S40EN.pdf" H 8300 1350 50  0001 C CNN
+	1    8300 1350
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector:Screw_Terminal_01x02 J1
+U 1 1 600E4135
+P 9700 2400
+F 0 "J1" H 9780 2392 50  0000 L CNN
+F 1 "Screw_Terminal_Heat" H 9780 2301 50  0000 L CNN
+F 2 "" H 9700 2400 50  0001 C CNN
+F 3 "~" H 9700 2400 50  0001 C CNN
+	1    9700 2400
+	1    0    0    -1  
+$EndComp
+Connection ~ 6700 1950
+Wire Wire Line
+	7000 1950 7000 2050
+Wire Wire Line
+	6700 1950 7000 1950
+Wire Wire Line
+	6700 1950 6700 2050
+Wire Wire Line
+	6100 1950 6700 1950
+Wire Wire Line
+	6150 2150 6100 2150
+Wire Wire Line
+	6150 2300 6150 2150
+Wire Wire Line
+	6450 2300 6550 2300
+$Comp
+L Device:R R1
+U 1 1 600D739F
+P 6300 2300
+F 0 "R1" V 6507 2300 50  0000 C CNN
+F 1 "330R" V 6416 2300 50  0000 C CNN
+F 2 "Resistor_SMD:R_MELF_MMB-0207" V 6230 2300 50  0001 C CNN
+F 3 "~" H 6300 2300 50  0001 C CNN
+	1    6300 2300
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Relay_SolidState:MOC3043M U1
+U 1 1 600CF22A
+P 5800 2050
+F 0 "U1" H 5800 2375 50  0000 C CNN
+F 1 "MOC3043M" H 5800 2284 50  0000 C CNN
+F 2 "" H 5600 1850 50  0001 L CIN
+F 3 "https://www.onsemi.com/pub/Collateral/MOC3043M-D.pdf" H 5800 2050 50  0001 L CNN
+	1    5800 2050
+	1    0    0    -1  
+$EndComp
+$Comp
+L Triac_Thyristor:BTA16-800CW Q1
+U 1 1 600C4288
+P 6700 2200
+F 0 "Q1" H 6828 2246 50  0000 L CNN
+F 1 "BTA16-800CW" H 6828 2155 50  0000 L CNN
+F 2 "Package_TO_SOT_THT:TO-220-3_Vertical" H 6900 2125 50  0001 L CIN
+F 3 "https://www.st.com/resource/en/datasheet/bta16.pdf" H 6700 2200 50  0001 L CNN
+	1    6700 2200
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6700 3400 6700 3250
+Wire Wire Line
+	9500 3400 6700 3400
+Wire Wire Line
+	8700 3300 9500 3300
+Wire Wire Line
+	7000 2950 8300 2950
+$Comp
+L Connector:Screw_Terminal_01x02 J2
+U 1 1 60135D2B
+P 9700 3300
+F 0 "J2" H 9780 3292 50  0000 L CNN
+F 1 "Screw_Terminal_Valve" H 9780 3201 50  0000 L CNN
+F 2 "" H 9700 3300 50  0001 C CNN
+F 3 "~" H 9700 3300 50  0001 C CNN
+	1    9700 3300
+	1    0    0    -1  
+$EndComp
+Connection ~ 6700 2850
+Wire Wire Line
+	7000 2850 7000 2950
+Wire Wire Line
+	6700 2850 7000 2850
+Wire Wire Line
+	6700 2850 6700 2950
+Wire Wire Line
+	6100 2850 6700 2850
+Wire Wire Line
+	6150 3050 6100 3050
+Wire Wire Line
+	6150 3200 6150 3050
+Wire Wire Line
+	6450 3200 6550 3200
+$Comp
+L Device:R R2
+U 1 1 60135D39
+P 6300 3200
+F 0 "R2" V 6507 3200 50  0000 C CNN
+F 1 "330R" V 6416 3200 50  0000 C CNN
+F 2 "Resistor_SMD:R_MELF_MMB-0207" V 6230 3200 50  0001 C CNN
+F 3 "~" H 6300 3200 50  0001 C CNN
+	1    6300 3200
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Relay_SolidState:MOC3043M U2
+U 1 1 60135D3F
+P 5800 2950
+F 0 "U2" H 5800 3275 50  0000 C CNN
+F 1 "MOC3043M" H 5800 3184 50  0000 C CNN
+F 2 "" H 5600 2750 50  0001 L CIN
+F 3 "https://www.onsemi.com/pub/Collateral/MOC3043M-D.pdf" H 5800 2950 50  0001 L CNN
+	1    5800 2950
+	1    0    0    -1  
+$EndComp
+$Comp
+L Triac_Thyristor:BTA16-800CW Q2
+U 1 1 60135D45
+P 6700 3100
+F 0 "Q2" H 6828 3146 50  0000 L CNN
+F 1 "BTA16-800CW" H 6828 3055 50  0000 L CNN
+F 2 "Package_TO_SOT_THT:TO-220-3_Vertical" H 6900 3025 50  0001 L CIN
+F 3 "https://www.st.com/resource/en/datasheet/bta16.pdf" H 6700 3100 50  0001 L CNN
+	1    6700 3100
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6700 4350 6700 4200
+Wire Wire Line
+	9500 4350 6700 4350
+Wire Wire Line
+	8700 4250 9500 4250
+Wire Wire Line
+	7000 3900 8300 3900
+$Comp
+L Connector:Screw_Terminal_01x02 J3
+U 1 1 60138ED4
+P 9700 4250
+F 0 "J3" H 9780 4242 50  0000 L CNN
+F 1 "Screw_Terminal_Pump" H 9780 4151 50  0000 L CNN
+F 2 "" H 9700 4250 50  0001 C CNN
+F 3 "~" H 9700 4250 50  0001 C CNN
+	1    9700 4250
+	1    0    0    -1  
+$EndComp
+Connection ~ 6700 3800
+Wire Wire Line
+	7000 3800 7000 3900
+Wire Wire Line
+	6700 3800 7000 3800
+Wire Wire Line
+	6700 3800 6700 3900
+Wire Wire Line
+	6100 3800 6700 3800
+Wire Wire Line
+	6150 4000 6100 4000
+Wire Wire Line
+	6150 4150 6150 4000
+Wire Wire Line
+	6450 4150 6550 4150
+$Comp
+L Device:R R3
+U 1 1 60138EE2
+P 6300 4150
+F 0 "R3" V 6507 4150 50  0000 C CNN
+F 1 "330R" V 6416 4150 50  0000 C CNN
+F 2 "Resistor_SMD:R_MELF_MMB-0207" V 6230 4150 50  0001 C CNN
+F 3 "~" H 6300 4150 50  0001 C CNN
+	1    6300 4150
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Relay_SolidState:MOC3043M U3
+U 1 1 60138EE8
+P 5800 3900
+F 0 "U3" H 5800 4225 50  0000 C CNN
+F 1 "MOC3043M" H 5800 4134 50  0000 C CNN
+F 2 "" H 5600 3700 50  0001 L CIN
+F 3 "https://www.onsemi.com/pub/Collateral/MOC3043M-D.pdf" H 5800 3900 50  0001 L CNN
+	1    5800 3900
+	1    0    0    -1  
+$EndComp
+$Comp
+L Triac_Thyristor:BTA16-800CW Q3
+U 1 1 60138EEE
+P 6700 4050
+F 0 "Q3" H 6828 4096 50  0000 L CNN
+F 1 "BTA16-800CW" H 6828 4005 50  0000 L CNN
+F 2 "Package_TO_SOT_THT:TO-220-3_Vertical" H 6900 3975 50  0001 L CIN
+F 3 "https://www.st.com/resource/en/datasheet/bta16.pdf" H 6700 4050 50  0001 L CNN
+	1    6700 4050
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8700 2400 8700 3300
+Connection ~ 8700 2400
+Wire Wire Line
+	8300 2050 8300 2950
+Connection ~ 8300 2050
+Wire Wire Line
+	8300 2950 8300 3900
+Connection ~ 8300 2950
+Wire Wire Line
+	8700 3300 8700 4250
+Connection ~ 8700 3300
+$Comp
+L Connector_Generic:Conn_01x15 J5
+U 1 1 6013E221
+P 3650 2450
+F 0 "J5" H 3568 1525 50  0000 C CNN
+F 1 "Conn_01x15" H 3568 1616 50  0000 C CNN
+F 2 "" H 3650 2450 50  0001 C CNN
+F 3 "~" H 3650 2450 50  0001 C CNN
+	1    3650 2450
+	-1   0    0    1   
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x15 J6
+U 1 1 6014CADA
+P 3300 2450
+F 0 "J6" H 3380 2492 50  0000 L CNN
+F 1 "Conn_01x15" H 3380 2401 50  0000 L CNN
+F 2 "" H 3300 2450 50  0001 C CNN
+F 3 "~" H 3300 2450 50  0001 C CNN
+	1    3300 2450
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector:Screw_Terminal_01x02 J5
+U 1 1 6014D829
+P 3600 4050
+F 0 "J5" V 3472 4130 50  0000 L CNN
+F 1 "Screw_Terminal_5V" V 3563 4130 50  0000 L CNN
+F 2 "" H 3600 4050 50  0001 C CNN
+F 3 "~" H 3600 4050 50  0001 C CNN
+	1    3600 4050
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	3500 3850 2900 3850
+Wire Wire Line
+	2900 3850 2900 3600
+Wire Wire Line
+	2900 3050 3100 3050
+Wire Wire Line
+	3600 3850 3600 3700
+Wire Wire Line
+	3100 3500 3100 3150
+$Comp
+L Device:R R4
+U 1 1 601586B8
+P 5250 1950
+F 0 "R4" V 5043 1950 50  0000 C CNN
+F 1 "270R" V 5134 1950 50  0000 C CNN
+F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder" V 5180 1950 50  0001 C CNN
+F 3 "~" H 5250 1950 50  0001 C CNN
+	1    5250 1950
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 6015C072
+P 5250 2850
+F 0 "R?" V 5043 2850 50  0000 C CNN
+F 1 "270R" V 5134 2850 50  0000 C CNN
+F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder" V 5180 2850 50  0001 C CNN
+F 3 "~" H 5250 2850 50  0001 C CNN
+	1    5250 2850
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 6015CDFF
+P 5250 3800
+F 0 "R?" V 5043 3800 50  0000 C CNN
+F 1 "270R" V 5134 3800 50  0000 C CNN
+F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder" V 5180 3800 50  0001 C CNN
+F 3 "~" H 5250 3800 50  0001 C CNN
+	1    5250 3800
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	5400 1950 5500 1950
+Wire Wire Line
+	5400 2850 5500 2850
+Wire Wire Line
+	5400 3800 5500 3800
+Wire Wire Line
+	3850 3050 5450 3050
+Wire Wire Line
+	5500 2150 5450 2150
+Wire Wire Line
+	5450 2150 5450 3050
+Connection ~ 5450 3050
+Wire Wire Line
+	5450 3050 5500 3050
+Wire Wire Line
+	5450 3050 5450 4000
+Wire Wire Line
+	5450 4000 5500 4000
+Wire Wire Line
+	5100 1950 4800 1950
+Wire Wire Line
+	4800 1950 4800 2450
+Wire Wire Line
+	4800 2450 3850 2450
+Wire Wire Line
+	5100 2850 4800 2850
+Wire Wire Line
+	4800 2850 4800 2550
+Wire Wire Line
+	4800 2550 3850 2550
+Wire Wire Line
+	3850 2650 4650 2650
+Wire Wire Line
+	4650 2650 4650 3800
+Wire Wire Line
+	4650 3800 5100 3800
+$Comp
+L Connector:Screw_Terminal_01x03 J8
+U 1 1 6016BFDE
+P 1050 3600
+F 0 "J8" H 968 3275 50  0000 C CNN
+F 1 "Screw_Terminal_SW_Steam" H 968 3366 50  0000 C CNN
+F 2 "" H 1050 3600 50  0001 C CNN
+F 3 "~" H 1050 3600 50  0001 C CNN
+	1    1050 3600
+	-1   0    0    1   
+$EndComp
+$Comp
+L Connector:Screw_Terminal_01x03 J7
+U 1 1 6016F432
+P 1050 3050
+F 0 "J7" H 968 2725 50  0000 C CNN
+F 1 "Screw_Terminal_SW_Brew" H 968 2816 50  0000 C CNN
+F 2 "" H 1050 3050 50  0001 C CNN
+F 3 "~" H 1050 3050 50  0001 C CNN
+	1    1050 3050
+	-1   0    0    1   
+$EndComp
+$Comp
+L Connector:Screw_Terminal_01x03 J6
+U 1 1 60170D56
+P 1050 2500
+F 0 "J6" H 968 2175 50  0000 C CNN
+F 1 "Screw_Terminal_SW_Water" H 968 2266 50  0000 C CNN
+F 2 "" H 1050 2500 50  0001 C CNN
+F 3 "~" H 1050 2500 50  0001 C CNN
+	1    1050 2500
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	1250 3700 1700 3700
+Connection ~ 3600 3700
+Wire Wire Line
+	3600 3700 3600 3500
+Wire Wire Line
+	1250 3150 1700 3150
+Wire Wire Line
+	1700 3150 1700 3700
+Connection ~ 1700 3700
+Wire Wire Line
+	1700 3700 3600 3700
+Wire Wire Line
+	1250 2600 1700 2600
+Wire Wire Line
+	1700 2600 1700 3150
+Connection ~ 1700 3150
+Wire Wire Line
+	1250 3600 2900 3600
+Connection ~ 2900 3600
+Wire Wire Line
+	2900 3600 2900 3050
+Wire Wire Line
+	1250 3050 2900 3050
+Connection ~ 2900 3050
+Wire Wire Line
+	1250 2500 2900 2500
+Wire Wire Line
+	2900 2500 2900 3050
+Wire Wire Line
+	3600 3500 3100 3500
+Wire Wire Line
+	1250 3500 2700 3500
+Wire Wire Line
+	2700 3500 2700 3450
+Wire Wire Line
+	2700 3450 4550 3450
+Wire Wire Line
+	4550 3450 4550 2750
+Wire Wire Line
+	4550 2750 3850 2750
+Wire Wire Line
+	1250 2950 2800 2950
+Wire Wire Line
+	2800 2950 2800 1450
+Wire Wire Line
+	2800 1450 4100 1450
+Wire Wire Line
+	4100 1450 4100 1850
+Wire Wire Line
+	4100 1850 3850 1850
+Wire Wire Line
+	1250 2400 2700 2400
+Wire Wire Line
+	2700 2400 2700 1350
+Wire Wire Line
+	2700 1350 4200 1350
+Wire Wire Line
+	4200 1350 4200 1950
+Wire Wire Line
+	4200 1950 3850 1950
+$Comp
+L Connector:Screw_Terminal_01x02 J9
+U 1 1 60195F66
+P 4750 1450
+F 0 "J9" H 4830 1442 50  0000 L CNN
+F 1 "Screw_Terminal_SW_Main" H 4830 1351 50  0000 L CNN
+F 2 "" H 4750 1450 50  0001 C CNN
+F 3 "~" H 4750 1450 50  0001 C CNN
+	1    4750 1450
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4550 1450 4300 1450
+Wire Wire Line
+	4300 1450 4300 1750
+Wire Wire Line
+	4300 1750 3850 1750
+Wire Wire Line
+	4550 1550 4550 2250
+Wire Wire Line
+	4550 2250 3850 2250
+$Comp
+L Connector:Screw_Terminal_01x03 J10
+U 1 1 6019F068
+P 4800 4400
+F 0 "J10" V 4672 4580 50  0000 L CNN
+F 1 "Screw_Terminal_TSIC_Sens" V 4763 4580 50  0000 L CNN
+F 2 "" H 4800 4400 50  0001 C CNN
+F 3 "~" H 4800 4400 50  0001 C CNN
+	1    4800 4400
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	4900 4200 4900 3850
+Wire Wire Line
+	4900 3850 3600 3850
+Connection ~ 3600 3850
+Wire Wire Line
+	4700 4200 2900 4200
+Wire Wire Line
+	2900 4200 2900 3850
+Connection ~ 2900 3850
+Wire Wire Line
+	4800 4200 4800 3350
+Wire Wire Line
+	4800 3350 5000 3350
+Wire Wire Line
+	5000 3350 5000 2150
+Wire Wire Line
+	5000 2150 3850 2150
+$EndSCHEMATC
