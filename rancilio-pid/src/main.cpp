@@ -113,15 +113,12 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t *payload, size_t length)
             return;
         }
 
-        if (jsonBuffer["power"])
+        if (jsonBuffer.containsKey("power"))
         {
-            machineEnabled = jsonBuffer["power"];
-            sendUpdate();
+            bool power = jsonBuffer["power"];
+            machineEnabled = power;
         }
-        if (jsonBuffer["status"])
-        {
-            sendUpdate();
-        }
+        sendUpdate();
         break;
     }
     case WStype_PING:
