@@ -517,4 +517,6 @@ Wire Wire Line
 	5000 3350 5000 2150
 Wire Wire Line
 	5000 2150 3850 2150
+Text Notes 4200 1050 0    50   ~ 0
+ToDos:\nPull Up /Down Widerstände\nSchaltung Relais\nSchaltung LED Main SW\nTerminal Switch LED
 $EndSCHEMATC

@@ -18,7 +18,7 @@ L Connector:Screw_Terminal_01x03 J4
 U 1 1 60108EAC
 P 9700 850
 F 0 "J4" H 9780 892 50  0000 L CNN
-F 1 "Screw_Terminal_01x03" H 9780 801 50  0000 L CNN
+F 1 "Screw_Terminal_220V" H 9780 801 50  0000 L CNN
 F 2 "" H 9700 850 50  0001 C CNN
 F 3 "~" H 9700 850 50  0001 C CNN
 	1    9700 850 
@@ -60,7 +60,7 @@ L Connector:Screw_Terminal_01x02 J1
 U 1 1 600E4135
 P 9700 2400
 F 0 "J1" H 9780 2392 50  0000 L CNN
-F 1 "Screw_Terminal_01x02" H 9780 2301 50  0000 L CNN
+F 1 "Screw_Terminal_Heat" H 9780 2301 50  0000 L CNN
 F 2 "" H 9700 2400 50  0001 C CNN
 F 3 "~" H 9700 2400 50  0001 C CNN
 	1    9700 2400
@@ -127,7 +127,7 @@ L Connector:Screw_Terminal_01x02 J2
 U 1 1 60135D2B
 P 9700 3300
 F 0 "J2" H 9780 3292 50  0000 L CNN
-F 1 "Screw_Terminal_01x02" H 9780 3201 50  0000 L CNN
+F 1 "Screw_Terminal_Valve" H 9780 3201 50  0000 L CNN
 F 2 "" H 9700 3300 50  0001 C CNN
 F 3 "~" H 9700 3300 50  0001 C CNN
 	1    9700 3300
@@ -194,7 +194,7 @@ L Connector:Screw_Terminal_01x02 J3
 U 1 1 60138ED4
 P 9700 4250
 F 0 "J3" H 9780 4242 50  0000 L CNN
-F 1 "Screw_Terminal_01x02" H 9780 4151 50  0000 L CNN
+F 1 "Screw_Terminal_Pump" H 9780 4151 50  0000 L CNN
 F 2 "" H 9700 4250 50  0001 C CNN
 F 3 "~" H 9700 4250 50  0001 C CNN
 	1    9700 4250
@@ -283,11 +283,11 @@ F 3 "~" H 3300 2450 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Connector:Screw_Terminal_01x02 J?
+L Connector:Screw_Terminal_01x02 J5
 U 1 1 6014D829
 P 3600 4050
-F 0 "J?" V 3564 3862 50  0000 R CNN
-F 1 "Screw_Terminal_01x02" V 3473 3862 50  0000 R CNN
+F 0 "J5" V 3472 4130 50  0000 L CNN
+F 1 "Screw_Terminal_5V" V 3563 4130 50  0000 L CNN
 F 2 "" H 3600 4050 50  0001 C CNN
 F 3 "~" H 3600 4050 50  0001 C CNN
 	1    3600 4050
@@ -296,13 +296,11 @@ $EndComp
 Wire Wire Line
 	3500 3850 2900 3850
 Wire Wire Line
-	2900 3850 2900 3050
+	2900 3850 2900 3600
 Wire Wire Line
 	2900 3050 3100 3050
 Wire Wire Line
-	3600 3850 3600 3500
-Wire Wire Line
-	3600 3500 3100 3500
+	3600 3850 3600 3700
 Wire Wire Line
 	3100 3500 3100 3150
 $Comp
@@ -375,4 +373,148 @@ Wire Wire Line
 	4650 2650 4650 3800
 Wire Wire Line
 	4650 3800 5100 3800
+$Comp
+L Connector:Screw_Terminal_01x03 J8
+U 1 1 6016BFDE
+P 1050 3600
+F 0 "J8" H 968 3275 50  0000 C CNN
+F 1 "Screw_Terminal_SW_Steam" H 968 3366 50  0000 C CNN
+F 2 "" H 1050 3600 50  0001 C CNN
+F 3 "~" H 1050 3600 50  0001 C CNN
+	1    1050 3600
+	-1   0    0    1   
+$EndComp
+$Comp
+L Connector:Screw_Terminal_01x03 J7
+U 1 1 6016F432
+P 1050 3050
+F 0 "J7" H 968 2725 50  0000 C CNN
+F 1 "Screw_Terminal_SW_Brew" H 968 2816 50  0000 C CNN
+F 2 "" H 1050 3050 50  0001 C CNN
+F 3 "~" H 1050 3050 50  0001 C CNN
+	1    1050 3050
+	-1   0    0    1   
+$EndComp
+$Comp
+L Connector:Screw_Terminal_01x03 J6
+U 1 1 60170D56
+P 1050 2500
+F 0 "J6" H 968 2175 50  0000 C CNN
+F 1 "Screw_Terminal_SW_Water" H 968 2266 50  0000 C CNN
+F 2 "" H 1050 2500 50  0001 C CNN
+F 3 "~" H 1050 2500 50  0001 C CNN
+	1    1050 2500
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	1250 3700 1700 3700
+Connection ~ 3600 3700
+Wire Wire Line
+	3600 3700 3600 3500
+Wire Wire Line
+	1250 3150 1700 3150
+Wire Wire Line
+	1700 3150 1700 3700
+Connection ~ 1700 3700
+Wire Wire Line
+	1700 3700 3600 3700
+Wire Wire Line
+	1250 2600 1700 2600
+Wire Wire Line
+	1700 2600 1700 3150
+Connection ~ 1700 3150
+Wire Wire Line
+	1250 3600 2900 3600
+Connection ~ 2900 3600
+Wire Wire Line
+	2900 3600 2900 3050
+Wire Wire Line
+	1250 3050 2900 3050
+Connection ~ 2900 3050
+Wire Wire Line
+	1250 2500 2900 2500
+Wire Wire Line
+	2900 2500 2900 3050
+Wire Wire Line
+	3600 3500 3100 3500
+Wire Wire Line
+	1250 3500 2700 3500
+Wire Wire Line
+	2700 3500 2700 3450
+Wire Wire Line
+	2700 3450 4550 3450
+Wire Wire Line
+	4550 3450 4550 2750
+Wire Wire Line
+	4550 2750 3850 2750
+Wire Wire Line
+	1250 2950 2800 2950
+Wire Wire Line
+	2800 2950 2800 1450
+Wire Wire Line
+	2800 1450 4100 1450
+Wire Wire Line
+	4100 1450 4100 1850
+Wire Wire Line
+	4100 1850 3850 1850
+Wire Wire Line
+	1250 2400 2700 2400
+Wire Wire Line
+	2700 2400 2700 1350
+Wire Wire Line
+	2700 1350 4200 1350
+Wire Wire Line
+	4200 1350 4200 1950
+Wire Wire Line
+	4200 1950 3850 1950
+$Comp
+L Connector:Screw_Terminal_01x02 J9
+U 1 1 60195F66
+P 4750 1450
+F 0 "J9" H 4830 1442 50  0000 L CNN
+F 1 "Screw_Terminal_SW_Main" H 4830 1351 50  0000 L CNN
+F 2 "" H 4750 1450 50  0001 C CNN
+F 3 "~" H 4750 1450 50  0001 C CNN
+	1    4750 1450
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4550 1450 4300 1450
+Wire Wire Line
+	4300 1450 4300 1750
+Wire Wire Line
+	4300 1750 3850 1750
+Wire Wire Line
+	4550 1550 4550 2250
+Wire Wire Line
+	4550 2250 3850 2250
+$Comp
+L Connector:Screw_Terminal_01x03 J10
+U 1 1 6019F068
+P 4800 4400
+F 0 "J10" V 4672 4580 50  0000 L CNN
+F 1 "Screw_Terminal_TSIC_Sens" V 4763 4580 50  0000 L CNN
+F 2 "" H 4800 4400 50  0001 C CNN
+F 3 "~" H 4800 4400 50  0001 C CNN
+	1    4800 4400
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	4900 4200 4900 3850
+Wire Wire Line
+	4900 3850 3600 3850
+Connection ~ 3600 3850
+Wire Wire Line
+	4700 4200 2900 4200
+Wire Wire Line
+	2900 4200 2900 3850
+Connection ~ 2900 3850
+Wire Wire Line
+	4800 4200 4800 3350
+Wire Wire Line
+	4800 3350 5000 3350
+Wire Wire Line
+	5000 3350 5000 2150
+Wire Wire Line
+	5000 2150 3850 2150
 $EndSCHEMATC
