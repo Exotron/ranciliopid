@@ -234,15 +234,15 @@ void loop()
         machineState = STATE_ON;
         pidInputTemp = TempSensor.getTemp();
 
-        if (digitalRead(SWITCH_BREW) == HIGH)
+        if (digitalRead(SWITCH_BREW) == LOW)
         {
             machineState = STATE_BREW;
         }
-        else if (digitalRead(SWITCH_WATER) == HIGH)
+        else if (digitalRead(SWITCH_WATER) == LOW)
         {
             machineState = STATE_WATER;
         }
-        else if (digitalRead(SWITCH_STEAM) == HIGH)
+        else if (digitalRead(SWITCH_STEAM) == LOW)
         {
             machineState = SWITCH_STEAM;
         }

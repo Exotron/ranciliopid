@@ -37,7 +37,7 @@
 #define RELAY_VALVE 12 //Output pin for 3-way-valve     D6 on Board
 #define RELAY_PUMP 13  //Output pin for pump            D7 on Board
 #define RELAY_HEAT 14  //Output pin for heater          D5 on Board
-#define RELAY_MAIN 0 // ToDo Define Pin
+#define RELAY_MAIN 3 // Output pim for main power       RX on Board
 
 //Coffeemachine Switches
 
