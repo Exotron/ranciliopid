@@ -16,3 +16,6 @@
 [submodule "lib/ZACwire"]
 	path = lib/ZACwire
 	url = https://github.com/lebuni/ZACwire-Library.git
+[submodule "lib/arduinoWebSockets"]
+	path = lib/arduinoWebSockets
+	url = https://github.com/Links2004/arduinoWebSockets
