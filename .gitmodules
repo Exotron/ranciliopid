@@ -1,0 +1,21 @@
+[submodule "lib/ArduinoJson"]
+	path = lib/ArduinoJson
+	url = https://github.com/bblanchon/ArduinoJson.git
+[submodule "lib/ESPAsyncTCP"]
+	path = lib/ESPAsyncTCP
+	url = https://github.com/me-no-dev/ESPAsyncTCP.git
+[submodule "lib/Arduino-PID"]
+	path = lib/Arduino-PID
+	url = https://github.com/br3ttb/Arduino-PID-Library.git
+[submodule "lib/Time"]
+	path = lib/Time
+	url = https://github.com/PaulStoffregen/Time.git
+[submodule "lib/WiFiManager"]
+	path = lib/WiFiManager
+	url = https://github.com/tzapu/WiFiManager.git
+[submodule "lib/ZACwire"]
+	path = lib/ZACwire
+	url = https://github.com/lebuni/ZACwire-Library.git
+[submodule "lib/arduinoWebSockets"]
+	path = lib/arduinoWebSockets
+	url = https://github.com/Links2004/arduinoWebSockets
